@@ -27,6 +27,9 @@ zugesicherten Rendite.
 ## Preismodell
 
 Der Preis pro Token folgt einer linearen Bonding Curve:
+
+price(s) = basePrice + slope * s
+
 wobei `s` die aktuell im Umlauf befindliche Token-Menge ist.
 
 ## Deployment
