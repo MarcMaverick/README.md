@@ -27,3 +27,18 @@ zugesicherten Rendite.
 ## Preismodell
 
 Der Preis pro Token folgt einer linearen Bonding Curve:
+wobei `s` die aktuell im Umlauf befindliche Token-Menge ist.
+
+## Deployment
+
+- Solidity `^0.8.24`
+- Abhängigkeiten: `@openzeppelin/contracts` (`ERC20`, `Ownable`)
+- Konstruktor-Parameter: `initialHolder`, `initialBasePrice`, `initialSlope`
+
+## Status
+
+Vorprojekt: TL1963 (Toffix Laffite) auf BNB Smart Chain, das PARUFYX Goal ablösen soll.
+
+## Lizenz
+
+MIT
