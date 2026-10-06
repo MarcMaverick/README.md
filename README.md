@@ -1,47 +1,51 @@
-# README.md
-README.md
 # PARUFYX Goal (PFXG)
 
-Ein einfacher Fan-Token für den Fußball-Bereich. Fans können Token direkt
-gegen BNB/ETH über eine klassische lineare Bonding Curve kaufen und
-verkaufen, und jede Adresse kann ein Profil mit Username und
-Lieblingsverein hinterlegen.
+Experimenteller Smart Contract für einen Fan-Token mit linearer Bonding
+Curve und On-Chain-Profil (Username + Lieblingsverein).
 
-Kein Investment-Produkt: Es gibt keine Umsatz-, Gewinn- oder
-Ausschüttungsbeteiligung und keinen Bezug zu Spieler-Transferrechten. Der
-Preis folgt ausschließlich der Bonding-Curve-Formel, nicht einer
-zugesicherten Rendite.
+> **Wichtige Hinweise**
+> - Dies ist weder Anlageberatung noch ein Angebot oder eine Aufforderung
+>   zum Kauf. Der Code wird "wie besehen" bereitgestellt.
+> - Der Token vermittelt keine Gewinn-, Umsatz-, Stimm- oder sonstigen
+>   Rechte gegenüber dem Entwickler oder Dritten.
+> - Der Preis folgt ausschließlich der Kurvenformel. Es gibt keine
+>   Rendite-, Rückkauf- oder Wertzusage. Ein Verkauf kann unter dem
+>   Kaufpreis liegen (Kurve und 1 % Verkaufsgebühr). Totalverlust möglich.
+> - Der Contract ist nicht von Dritten geprüft (kein Audit). Smart-Contract-
+>   Fehler können zum Verlust des eingesetzten Geldes führen.
+> - Keine Verbindung zu Vereinen, Ligen oder Spielern. Namen und Logos
+>   gehören ihren jeweiligen Inhabern.
+> - Die Nutzung kann in deinem Land eingeschränkt oder verboten sein.
+>   Prüfe Recht und Steuern selbst.
 
-## Funktionsübersicht
+## Funktionen
 
 | Funktion | Beschreibung |
 |---|---|
-| `buy(amount)` | Kauft `amount` Token gegen BNB/ETH zum aktuellen Kurvenpreis, überzahlte Beträge werden automatisch erstattet |
-| `sell(amount)` | Verkauft `amount` Token zurück an den Contract, Auszahlung nach gleicher Kurve |
-| `costFor(amount)` | Liefert die Kosten für einen Kauf von `amount` Token, ohne eine Transaktion auszuführen |
-| `payoutFor(amount)` | Liefert die Auszahlung für einen Verkauf von `amount` Token, ohne eine Transaktion auszuführen |
-| `soldSupply()` | Aktuell im Umlauf befindliche Token-Menge |
-| `setProfile(username, favoriteClub)` | Setzt/aktualisiert das eigene Fan-Profil |
-| `setCurve(basePrice, slope)` | Nur Owner: passt die Kurvenparameter an |
+| `buy(amount)` | Kauft `amount` Token. `msg.value` ist die Preisobergrenze, Überschuss wird erstattet |
+| `sell(amount, minPayout)` | Verkauft Token, schlägt unter `minPayout` fehl |
+| `costFor(amount)` | Kosten eines Kaufs in Wei |
+| `payoutFor(amount)` | Auszahlung und Gebühr eines Verkaufs in Wei |
+| `currentPrice()` | Aktueller Preis pro Token in Wei |
+| `sold()` | Verkaufte Menge |
+| `setProfile(username, favoriteClub)` | Eigenes Profil (max. 32 / 48 Bytes) |
 
 ## Preismodell
 
-Der Preis pro Token folgt einer linearen Bonding Curve:
+price(s) = basePrice + slope * s / 1e18
 
-price(s) = basePrice + slope * s
+`basePrice` und `slope` sind unveränderlich. Es gibt keinen Owner und
+keine Admin-Funktionen. Die Verkaufsgebühr (1 %) bleibt in der Reserve.
 
-wobei `s` die aktuell im Umlauf befindliche Token-Menge ist.
+## Technik
 
-## Deployment
-
-- Solidity `^0.8.24`
-- Abhängigkeiten: `@openzeppelin/contracts` (`ERC20`, `Ownable`)
-- Konstruktor-Parameter: `initialHolder`, `initialBasePrice`, `initialSlope`
+Solidity `^0.8.24`, OpenZeppelin v5. Konstruktor:
+`initialBasePrice`, `initialSlope` (Wei, `slope` max. 1e18).
 
 ## Status
 
-Vorprojekt: TL1963 (Toffix Laffite) auf BNB Smart Chain, das PARUFYX Goal ablösen soll.
+Entwurf. Nicht auditiert, nicht auf einem öffentlichen Netz deployt.
 
 ## Lizenz
 
-MIT
+MIT (Code). Die Lizenz ersetzt keine rechtliche Prüfung.
